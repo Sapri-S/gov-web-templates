@@ -1,6 +1,6 @@
 # Build from the repository root:
 #   docker build -f deploy/web.Dockerfile -t portal-web .
-FROM node:22-alpine AS build
+FROM node:25-alpine AS build
 WORKDIR /src
 COPY apps/portal-web/package.json apps/portal-web/package-lock.json ./
 RUN npm ci
