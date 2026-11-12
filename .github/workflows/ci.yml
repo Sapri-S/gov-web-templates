@@ -16,7 +16,7 @@ jobs:
       run:
         working-directory: apps/portal-api
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -31,7 +31,7 @@ jobs:
       run:
         working-directory: apps/portal-web
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v5
         with:
           node-version: "22"
@@ -48,7 +48,7 @@ jobs:
     name: WordPress starter checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: PHP syntax
         run: find wordpress -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: theme.json is valid JSON
@@ -59,6 +59,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [api, web]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - run: docker build -f deploy/api.Dockerfile -t portal-api:ci .
       - run: docker build -f deploy/web.Dockerfile -t portal-web:ci .
