@@ -1,0 +1,28 @@
+/*
+Theme Name: Gov Starter
+Description: Accessible block theme for local government sites. Colors, type and spacing follow USWDS tokens. Change them per client in theme.json.
+Version: 0.1.0
+Requires at least: 6.6
+Requires PHP: 8.1
+License: GPL-2.0-or-later
+Text Domain: gov-starter
+*/
+
+/* Visible focus for keyboard users on every interactive element. */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 0.25rem solid var(--wp--preset--color--focus);
+  outline-offset: 0.25rem;
+}
+
+/* Underline links in body text so they don't rely on color alone. */
+.wp-site-blocks main a:not(.wp-element-button) {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* Alert banner for emergencies; add the "is-style-alert" class to a Group block. */
+.is-style-alert {
+  border-left: 0.5rem solid var(--wp--preset--color--emergency);
+  background: var(--wp--preset--color--emergency-light);
+  padding: var(--wp--preset--spacing--30);
+}

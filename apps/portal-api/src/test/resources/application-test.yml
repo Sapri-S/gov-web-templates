@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:portal;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Never contacted in tests; requests use mock JWTs.
+          issuer-uri: https://issuer.example.test

@@ -1,0 +1,9 @@
+/* Styles the adapter needs. Kept in a stylesheet (not inline) so the
+   Content-Security-Policy can forbid inline styles. */
+.portal-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

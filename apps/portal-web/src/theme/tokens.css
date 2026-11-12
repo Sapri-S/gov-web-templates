@@ -1,0 +1,29 @@
+/*
+ * [CLIENT] Brand tokens. Take colors from the client's seal or brand guide:
+ * one primary, one accent, neutrals. Check every text/background pair for
+ * at least 4.5:1 contrast before shipping.
+ *
+ * This file only adjusts a few areas. For deeper changes, compile USWDS from
+ * Sass with the client's theme settings (see docs/architecture.md).
+ */
+:root {
+  --brand-primary: #1a4480; /* USWDS blue-60v */
+  --brand-primary-dark: #162e51; /* USWDS blue-80v */
+  --brand-accent: #e5a000; /* USWDS gold-30v; use only on dark backgrounds */
+}
+
+.site-header {
+  border-bottom: 4px solid var(--brand-primary);
+}
+
+.site-header .usa-logo__text a {
+  color: var(--brand-primary-dark);
+}
+
+.usa-button {
+  background-color: var(--brand-primary);
+}
+
+.usa-button:hover {
+  background-color: var(--brand-primary-dark);
+}

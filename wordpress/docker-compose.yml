@@ -1,0 +1,33 @@
+# Local development only. Production hosting is chosen per client (docs/operations.md).
+# Start: docker compose up -d, then open http://localhost:8081
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: ${WP_DB_PASSWORD:?Set WP_DB_PASSWORD in .env}
+      MARIADB_RANDOM_ROOT_PASSWORD: "1"
+    volumes:
+      - db:/var/lib/mysql
+
+  wordpress:
+    image: wordpress:6-php8.3-apache
+    depends_on:
+      - db
+    ports:
+      - "127.0.0.1:8081:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('DISALLOW_FILE_EDIT', true);
+        define('WP_AUTO_UPDATE_CORE', 'minor');
+    volumes:
+      - ./wp-content/themes/gov-starter:/var/www/html/wp-content/themes/gov-starter:ro
+      - ./wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+
+volumes:
+  db:

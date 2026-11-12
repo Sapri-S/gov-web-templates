@@ -1,0 +1,85 @@
+# Base settings shared by every client. Put client-specific values in
+# application-<client>.yml and start with SPRING_PROFILES_ACTIVE=<client>.
+
+spring:
+  application:
+    name: portal-api
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/portal}
+    username: ${DATABASE_USERNAME:portal}
+    password: ${DATABASE_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Required. The staff identity provider (Login.gov, Entra ID, Okta, Keycloak...).
+          issuer-uri: ${OIDC_ISSUER_URI}
+  mvc:
+    problemdetails:
+      enabled: true
+  data:
+    web:
+      pageable:
+        max-page-size: 100
+
+server:
+  error:
+    include-stacktrace: never
+    include-message: never
+  forward-headers-strategy: framework
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+
+portal:
+  allowed-origins: ${PORTAL_ALLOWED_ORIGINS:http://localhost:5173}
+  service-requests:
+    # [CLIENT] Replace with the client's real request types.
+    categories:
+      - pothole
+      - streetlight
+      - trash-and-recycling
+      - graffiti
+      - other
+  forms:
+    # [CLIENT] Example form. Add more forms here; the frontend renders them from the API.
+    contact:
+      title: Contact us
+      description: Send a question or comment. We answer within 2 business days.
+      fields:
+        - name: name
+          label: Your name
+          type: TEXT
+          required: true
+          max-length: 100
+        - name: email
+          label: Email address
+          type: EMAIL
+          required: true
+        - name: topic
+          label: Topic
+          type: SELECT
+          required: true
+          options:
+            - General question
+            - Website feedback
+            - Public records
+        - name: message
+          label: Message
+          type: TEXTAREA
+          required: true
+          max-length: 2000

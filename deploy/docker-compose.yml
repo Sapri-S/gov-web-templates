@@ -1,0 +1,49 @@
+# Runs the portal on one server: database, API and web.
+# Fits a single VM or container host at a commercial provider. Put a TLS-terminating
+# proxy, load balancer or CDN with a web application firewall in front of port 8080.
+#
+#   cp deploy/.env.example deploy/.env   # then fill in real values
+#   docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: portal
+      POSTGRES_USER: portal
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portal -d portal"]
+      interval: 10s
+      retries: 5
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/api.Dockerfile
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/portal
+      DATABASE_USERNAME: portal
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      OIDC_ISSUER_URI: ${OIDC_ISSUER_URI:?Set OIDC_ISSUER_URI}
+      PORTAL_ALLOWED_ORIGINS: ${PORTAL_ALLOWED_ORIGINS:?Set PORTAL_ALLOWED_ORIGINS}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-default}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/web.Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  db-data:
