@@ -7,7 +7,7 @@ RUN mvn -B -q dependency:go-offline
 COPY apps/portal-api/src ./src
 RUN mvn -B -q package -DskipTests
 
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:24-jre
 RUN useradd --system --uid 10001 --no-create-home app
 WORKDIR /app
 COPY --from=build /src/target/portal-api-*.jar /app/app.jar
