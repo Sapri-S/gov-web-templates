@@ -1,6 +1,6 @@
 # Build from the repository root:
 #   docker build -f deploy/api.Dockerfile -t portal-api .
-FROM maven:3.9-eclipse-temurin-21 AS build
+FROM maven:3.9-eclipse-temurin-26 AS build
 WORKDIR /src
 COPY apps/portal-api/pom.xml .
 RUN mvn -B -q dependency:go-offline
